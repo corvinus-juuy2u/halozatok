@@ -1,116 +1,119 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title></title>
-</head>
-
-<body>
-    <div id="külső">
-        <div id="kérdés_szöveg">
-            Kérdés szövege
-        </div>
-
-        <div id="középső">
-            <div id="válaszok">
-                <div id="válasz1" class="kerdes">Válasz 1</div>
-                <div id="válasz2" class="kerdes">Válasz 2</div>
-                <div id="válasz3" class="kerdes">Válasz 3</div>
-            </div>
-            <div id="kép">
-                <img id="kép1" src="https://szoft1.comeback.hu/hajo/teszt-0050.jpg" />
-            </div>
-        </div>
-        <div id="vezérlő">
-            <div class="gomb kattintható">Vissza</div>
-            <div class="gomb kattintható">Előre</div>
-        </div>
-    </div>
-
-
-    <div id="külső">
-        ...
-    </div>
-
-    <div id="válaszok">
-        <div id="válasz1" class="kerdes kattintható">Válasz 1</div>
-        <div id="válasz2" class="kerdes kattintható jó">Válasz 2</div>
-        <div id="válasz3" class="kerdes kattintható rossz">Válasz 3</div>
-    </div>
+    <title>Hajó</title>
 
     <style>
+      html,
+      body {
+        height: 100vh;
+        overflow-y: hidden;
+        min-width: 1100px;
+      }
 
-        @media only screen and (max-width: 768px) {
-            /* For mobile phones: */
-            [class*="col-"] {
-                width: 100%;
-            }
-        }
+      div {
+        margin: 25px;
+        border: 1px dotted #d37f85;
+        background: #fdd7d8;
+        font-size: 20px;
+        font-weight: bold;
+      }
 
-        html, body {
-            height: 100%;
-        }
+      #külső {
+        height: 98vh;
+        margin: 1vh 25px;
+        flex-direction: column;
+        display: flex;
+      }
 
-        div {
-            margin: 25px;
-            border: 1px dotted #D37F85;
-            background: #FDD7D8;
-            font-size: 20px;
-            font-weight:bold;
-        }
+      #középső {
+        display: flex;
+        flex-direction: row;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+      }
 
-        #külső {
-            height: 100%;
-            flex-direction: column;
-            display: flex;
-        }
+      #válaszok {
+        flex-grow: 1;
+        flex-shrink: 1;
+      }
 
-        #kérdés_szöveg {
-        }
+      #vezérlő {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
 
-        #középső {
-            display: flex;
-            flex-direction: row;
-            display: flex;
-            flex-direction: row;
-            flex-grow: 1
-        }
+      #kép {
+        overflow: hidden;
+        flex-shrink: 0;
+      }
 
-        #válaszok {
-            flex-grow: 1;
-            flex-shrink: 1;
-        }
+      #kérdés_szöveg {
+        font-size: 1.5em;
+        padding: 5px 10px;
+      }
 
-        #vezérlő {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }
+      .gomb,
+      .kérdés {
+        cursor: pointer;
+        /*box-shadow: 3px 3px 3px rgba(121, 121, 121,0.4);
+        border-radius: 5px;*/
+      }
 
-        #kép {
-            overflow: hidden;
-            flex-shrink: 0;
-        }
+      .gomb {
+        padding: 20px;
+        width: 80px;
+        text-align: center;
+      }
 
-        .gomb {
-            padding: 20px;
-            width: 80px;
-        }
+      .kérdés {
+        padding: 5px 10px;
+      }
 
-        .kerdes {
-        }
+      .gomb:hover,
+      .kérdés:hover {
+        background-color: #be6970;
+        color: white;
+      }
 
-        .kattintható:hover {
-            background-color: #BE6970;
-            color: white;
-        }
+      .jó {
+        background: green;
+      }
+      .rossz {
+        background: red;
+      }
+      .választott {
+        background: orange;
+      }
     </style>
+    <script src="hetedik.js"></script>
+  </head>
 
+  <body>
+    <div id="külső">
+      <div id="kérdés_szöveg"></div>
 
+      <div id="középső">
+        <div id="válaszok">
+          <div id="válasz1" class="kérdés"></div>
+          <div id="válasz2" class="kérdés"></div>
+          <div id="válasz3" class="kérdés"></div>
+        </div>
 
+        <div id="kép">
+          <img id="kép1" src="" />
+        </div>
+      </div>
 
-</body>
-
+      <div id="vezérlő">
+        <div class="gomb" id="elsőgomb"> &lt; Vissza</div>
+        <div class="gomb" id="másodikgomb">Előre &gt;</div>
+      </div>
+    </div>
+  </body>
 </html>
