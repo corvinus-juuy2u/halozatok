@@ -1,11 +1,11 @@
 /*próbáljuk ki majd a végén, hogy mi történik a box-sizing kikommentelésével*/
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  font-weight: bold;
-  text-align: center;
+    font-weight: bold;
+    text-align: center;
 }
 
 #article,
@@ -13,24 +13,25 @@ body {
 #footer,
 #header,
 #nav {
-  padding: 20px;
+    padding: 20px;
 }
 
 #header {
-  background-color: #fff4fc;
+    background-color: #fff4fc;
 }
+
 #nav {
-  background: #eda0a3;
+    background: #eda0a3;
 }
 
 #article {
-  text-align: left;
-  background: #ce757c;
+    text-align: left;
+    background: #ce757c;
 }
 
 #aside {
   background-color:#d57d83 ;
-  text-align: left;
+    text-align: left;
 }
 
 #footer {
@@ -39,34 +40,39 @@ body {
 
 /* menü */
 #nav {
-  display: flex;
+    display: flex;
 }
-#nav a {
-  /* ugyanaz, mint flex-grow:1; flex-shrink:1;flex-basis:auto;*/
-  flex: 1 1 auto;
-  text-decoration: none;
-  color: black;
-}
+
+    #nav a {
+        /* ugyanaz, mint flex-grow:1; flex-shrink:1;flex-basis:auto;*/
+        flex: 1 1 auto;
+        text-decoration: none;
+        color: black;
+    }
 
 /* 800px-nél nagyobb képernyő*/
 @media screen and (min-width: 800px) {
-  body {
-    display: flex;
-    flex-direction: column;
-    max-width: 1500px;
-    margin: auto;
-  }
-  #main {
-    display: flex;
-  }
-  #nav,
-  #header {
-    order: -1;
-  }
-  #article {
-    flex: 1 1 75%;
-  }
-  #aside {
-    flex: 1 1 95%;
-  }
+    body {
+        display: flex;
+        flex-direction: column;
+        max-width: 1500px;
+        margin: auto;
+    }
+
+    #main {
+        display: flex;
+    }
+
+    #nav,
+    #header {
+        order: -1;
+    }
+
+    #article {
+        flex: 1 1 75%;
+    }
+
+    #aside {
+        flex: 1 1 95%;
+    }
 }
