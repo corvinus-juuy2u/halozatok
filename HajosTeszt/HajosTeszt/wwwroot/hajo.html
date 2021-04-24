@@ -1,119 +1,121 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Hajó</title>
 
     <style>
-      html,
-      body {
-        height: 100vh;
-        overflow-y: hidden;
-        min-width: 1100px;
-      }
+        html,
+        body {
+            height: 100vh;
+            overflow-y: hidden;
+            min-width: 1100px;
+        }
 
-      div {
-        margin: 25px;
-        border: 1px dotted #d37f85;
-        background: #fdd7d8;
-        font-size: 20px;
-        font-weight: bold;
-      }
+        div {
+            margin: 25px;
+            border: 1px dotted #d37f85;
+            background: #fdd7d8;
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-      #külső {
-        height: 98vh;
-        margin: 1vh 25px;
-        flex-direction: column;
-        display: flex;
-      }
+        #külső {
+            height: 98vh;
+            margin: 1vh 25px;
+            flex-direction: column;
+            display: flex;
+        }
 
-      #középső {
-        display: flex;
-        flex-direction: row;
-        display: flex;
-        flex-direction: row;
-        flex-grow: 1;
-      }
+        #középső {
+            display: flex;
+            flex-direction: row;
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+        }
 
-      #válaszok {
-        flex-grow: 1;
-        flex-shrink: 1;
-      }
+        #válaszok {
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
 
-      #vezérlő {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
+        #vezérlő {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
 
-      #kép {
-        overflow: hidden;
-        flex-shrink: 0;
-      }
+        #kép {
+            overflow: hidden;
+            flex-shrink: 0;
+        }
 
-      #kérdés_szöveg {
-        font-size: 1.5em;
-        padding: 5px 10px;
-      }
+        #kérdés_szöveg {
+            font-size: 1.5em;
+            padding: 5px 10px;
+        }
 
-      .gomb,
-      .kérdés {
-        cursor: pointer;
-        /*box-shadow: 3px 3px 3px rgba(121, 121, 121,0.4);
+        .gomb,
+        .kérdés {
+            cursor: pointer;
+            /*box-shadow: 3px 3px 3px rgba(121, 121, 121,0.4);
         border-radius: 5px;*/
-      }
+        }
 
-      .gomb {
-        padding: 20px;
-        width: 80px;
-        text-align: center;
-      }
+        .gomb {
+            padding: 20px;
+            width: 80px;
+            text-align: center;
+        }
 
-      .kérdés {
-        padding: 5px 10px;
-      }
+        .kérdés {
+            padding: 5px 10px;
+        }
 
-      .gomb:hover,
-      .kérdés:hover {
-        background-color: #be6970;
-        color: white;
-      }
+            .gomb:hover,
+            .kérdés:hover {
+                background-color: #be6970;
+                color: white;
+            }
 
-      .jó {
-        background: green;
-      }
-      .rossz {
-        background: red;
-      }
-      .választott {
-        background: orange;
-      }
+        .jó {
+            background: green;
+        }
+
+        .rossz {
+            background: red;
+        }
+
+        .választott {
+            background: orange;
+        }
     </style>
     <script src="hetedik.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div id="külső">
-      <div id="kérdés_szöveg"></div>
+        <div id="kérdés_szöveg"></div>
 
-      <div id="középső">
-        <div id="válaszok">
-          <div id="válasz1" class="kérdés"></div>
-          <div id="válasz2" class="kérdés"></div>
-          <div id="válasz3" class="kérdés"></div>
+        <div id="középső">
+            <div id="válaszok">
+                <div id="válasz1" class="kérdés"></div>
+                <div id="válasz2" class="kérdés"></div>
+                <div id="válasz3" class="kérdés"></div>
+            </div>
+
+            <div id="kép">
+                <img id="kép1" src="" />
+            </div>
         </div>
 
-        <div id="kép">
-          <img id="kép1" src="" />
+        <div id="vezérlő">
+            <div class="gomb" id="elsőgomb"> &lt; Vissza</div>
+            <div class="gomb" id="másodikgomb">Előre &gt;</div>
         </div>
-      </div>
-
-      <div id="vezérlő">
-        <div class="gomb" id="elsőgomb"> &lt; Vissza</div>
-        <div class="gomb" id="másodikgomb">Előre &gt;</div>
-      </div>
     </div>
-  </body>
+</body>
 </html>
