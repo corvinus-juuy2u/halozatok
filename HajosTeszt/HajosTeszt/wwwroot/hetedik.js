@@ -1,19 +1,17 @@
 //Megjegyzés: kértem a léptetés megírásánál egy kis segítséget, mert nekem egyedül nem sikerült sehogy sem megcsinálni, pedig a logikáját kitaláltam :( A többi része ment teljesen önállóan is
 
-let kérdések;
+let kerdes;
 let index;
 let kerdes_szoveg, kerdes_valaszok, kerdes_kep;
 let kattinthato = false;
 
-async function letöltés() {
-    let k = await fetch("./questions.json");
-    k = await k.json();
-
-    letöltésBefejeződött(k);
-}
-
-function letöltésBefejeződött(k) {
-    kérdések = k;
+function kérdésBetölt(id) {
+    fetch(`/questions/${id}`)
+        .then(res => {
+            if (!res.ok) console.log(`HIBA! ${res.status}`);
+            else return res.json();
+        })
+        .then(res => kérdésMegjelenítés(res))
 }
 
 function kérdésMegjelenítés(kérdés) {
@@ -21,43 +19,48 @@ function kérdésMegjelenítés(kérdés) {
         v.classList.remove("jó", "rossz", "választott");
     });
 
-    const kerdes = kérdések[kérdés];
+    kerdes = kérdés;
 
-    kerdes_szoveg.innerHTML = kerdes.questionText;
-    kerdes_valaszok[0].innerHTML = kerdes.answer1;
-    kerdes_valaszok[1].innerHTML = kerdes.answer2;
-    kerdes_valaszok[2].innerHTML = kerdes.answer3;
+    kerdes_szoveg.innerHTML = kérdés.questionText;
+    kerdes_valaszok[0].innerHTML = kérdés.answer1;
+    kerdes_valaszok[1].innerHTML = kérdés.answer2;
+    kerdes_valaszok[2].innerHTML = kérdés.answer3;
+
     kerdes_kep.src =
-        kerdes.image !== ""
-            ? `https://szoft1.comeback.hu/hajo/${kerdes.image}`
+        kérdés.image !== ""
+            ? `https://szoft1.comeback.hu/hajo/${kérdés.image}`
             : "";
+
     if (!kattinthato) kattinthatoValtas();
+
 }
 
-window.addEventListener("load", async (event) => {
-    index = 0;
+window.addEventListener("load", (event) => {
+    index = 1;
 
     document.querySelector("#elsőgomb").addEventListener("click", visszalép);
     document.querySelector("#másodikgomb").addEventListener("click", előrelép);
 
     kerdes_szoveg = document.querySelector("#kérdés_szöveg");
     kerdes_valaszok = document.querySelectorAll(".kérdés");
-    kerdes_kep = document.querySelector("#kép").children[0];
+    kerdes_kep = document.querySelector("#kép1");
+    kerdes_kep.addEventListener("error", képEllenőrzés);
 
     kerdes_valaszok.forEach((v) => v.addEventListener("click", válaszol));
 
-    await letöltés();
-    kérdésMegjelenítés(index);
+    kérdésBetölt(index);
 });
 
+
 function előrelép() {
-    index = index + 1 >= kérdések.length ? 0 : index + 1;
-    kérdésMegjelenítés(index);
+    index = index + 1 > 800 ? 1 : index + 1;
+    kérdésBetölt(index);
 }
 function visszalép() {
-    index = index - 1 < 0 ? kérdések.length - 1 : index - 1;
-    kérdésMegjelenítés(index);
+    index = index - 1 < 1 ? 800 : index - 1;
+    kérdésBetölt(index);
 }
+
 
 function válaszol(event) {
     if (kattinthato) {
@@ -66,10 +69,10 @@ function válaszol(event) {
 
         kerdes_valaszok.forEach((v) => {
             const id = parseInt(v.id.substring(6));
-            if (választott_id === kérdések[index].correctAnswer) {
+            if (választott_id === kerdes.correctAnswer) {
                 if (választott_id === id) v.classList.add("jó");
             } else {
-                if (id === kérdések[index].correctAnswer) v.classList.add("jó");
+                if (id === kerdes.correctAnswer) v.classList.add("jó");
                 else if (id === választott_id) v.classList.add("választott");
                 else v.classList.add("rossz");
             }
@@ -78,6 +81,13 @@ function válaszol(event) {
     }
 }
 
+//const kattinthatoValtas = () => {kattinthato = !kattinthato;}
 function kattinthatoValtas() {
     kattinthato = !kattinthato;
+}
+
+
+
+function képEllenőrzés(event) {
+    if (event.srcElement.naturalHeight == 0) event.srcElement.src = "";
 }
