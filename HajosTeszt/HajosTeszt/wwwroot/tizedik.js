@@ -5,7 +5,7 @@ let kerdes_szoveg, kerdes_valaszok, kerdes_kep;
 let kattinthato = false;
 
 var hotList = [];
-var questionsInHotList = 2; 
+var questionsInHotList = 7; 
 var displayedQuestion;    
 var numberOfQuestions; 
 var nextQuestion = 1;
