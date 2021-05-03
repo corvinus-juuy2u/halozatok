@@ -4,11 +4,13 @@ let index;
 let kerdes_szoveg, kerdes_valaszok, kerdes_kep;
 let kattinthato = false;
 
-var hotList = [];           
-var questionsInHotList = 7; 
-var displayedQuestion;      
-var numberOfQuestions;      
-var nextQuestion = 1;      
+var hotList = [];
+var questionsInHotList = 2; 
+var displayedQuestion;    
+var numberOfQuestions; 
+var nextQuestion = 1;
+
+var timeoutHandler;
 
 /*function kérdésBetölt(id) {
     fetch(`/questions/${id}`)
@@ -28,7 +30,8 @@ var nextQuestion = 1;
 
 
 
-function kérdésBetölt (questionNumber, destination) {
+function kérdésBetölt(questionNumber, destination) {
+    if (questionNumber > numberOfQuestions) return;
     fetch(`/questions/${questionNumber}`)
         .then(
             res => {
@@ -57,24 +60,44 @@ function kérdésBetölt (questionNumber, destination) {
         /*.then(res => kérdésMegjelenítés(res))*/
 }
 
+async function getNumberOfQuestions() {
+    numberOfQuestions = await fetch("questions/count")
+        .then(res => {
+            if (!res.ok) console.error(`Hibás letöltés: ${res.status}`);
+            else return res.json();
+        });
+    console.log(numberOfQuestions);
+}
+
 function init() {
+    let saved = JSON.parse(localStorage.getItem("hajo_kerdesek"));
+
+    getNumberOfQuestions();
+
+    if (saved != null) {
+        hotList = saved.hotList;
+        nextQuestion = saved.nextQuestion;
+        displayedQuestion = 0;
+        kérdésMegjelenítés();
+        return;
+    }
+
     for (var i = 0; i < questionsInHotList; i++) {
         let q = {
             question: {},
             goodAnswers: 0,
         }
         hotList[i] = q;
-        //console.log(question);
+        console.log(hotList[i]);
         //console.log(question);
     }
-
     for (var i = 0; i < questionsInHotList; i++) {
         kérdésBetölt(nextQuestion, i);
         nextQuestion++;
     }
 }
 
-function kérdésMegjelenítés(kérdés) {
+function kérdésMegjelenítés() {
     kerdes_valaszok.forEach((v) => {
         v.classList.remove("jó", "rossz", "választott");
     });
@@ -83,17 +106,18 @@ function kérdésMegjelenítés(kérdés) {
     //console.log(kérdés);
 
     kerdes = hotList[displayedQuestion].question;
-    console.log(kérdés);
+    //console.log(hotList[displayedQuestion].question);
     //kerdes = kérdés;
 
-    kerdes_szoveg.innerHTML = kérdés.questionText;
-    kerdes_valaszok[0].innerHTML = kérdés.answer1;
-    kerdes_valaszok[1].innerHTML = kérdés.answer2;
-    kerdes_valaszok[2].innerHTML = kérdés.answer3;
+    console.log(kerdes);
+    kerdes_szoveg.innerHTML = kerdes.questionText;
+    kerdes_valaszok[0].innerHTML = kerdes.answer1;
+    kerdes_valaszok[1].innerHTML = kerdes.answer2;
+    kerdes_valaszok[2].innerHTML = kerdes.answer3;
 
     kerdes_kep.src =
-        kérdés.image !== ""
-            ? `https://szoft1.comeback.hu/hajo/${kérdés.image}`
+        kerdes.image !== ""
+        ? `https://szoft1.comeback.hu/hajo/${kerdes.image}`
             : "";
 
     if (!kattinthato) kattinthatoValtas();
@@ -103,7 +127,9 @@ function kérdésMegjelenítés(kérdés) {
 window.addEventListener("load", (event) => {
     index = 1;
 
-    document.querySelector("#elsőgomb").addEventListener("click", visszalép);
+
+
+    /*document.querySelector("#elsőgomb").addEventListener("click", visszalép);*/
     document.querySelector("#másodikgomb").addEventListener("click", előrelép);
 
     kerdes_szoveg = document.querySelector("#kérdés_szöveg");
@@ -113,13 +139,14 @@ window.addEventListener("load", (event) => {
 
     kerdes_valaszok.forEach((v) => v.addEventListener("click", válaszol));
 
-    kérdésBetölt(index);
+    //kérdésBetölt(index);
+
+    init();    
 });
 
 
 function előrelép() {
-    var timeoutHandler;
-    timeoutHandler = setTimeout(előre, 3000);
+    
     clearTimeout(timeoutHandler)
 
     displayedQuestion++;
@@ -129,27 +156,41 @@ function előrelép() {
     //index = index + 1 > 800 ? 1 : index + 1;
     //kérdésBetölt(index);
 }
+/*
 function visszalép() {
     index = index - 1 < 1 ? 800 : index - 1;
     kérdésBetölt(index);
-}
+}*/
 
 
 function válaszol(event) {
     if (kattinthato) {
+        timeoutHandler = setTimeout(előrelép, 3000);
         const választott = event.target;
         const választott_id = parseInt(választott.id.substring(6));
 
         kerdes_valaszok.forEach((v) => {
             const id = parseInt(v.id.substring(6));
             if (választott_id === kerdes.correctAnswer) {
-                if (választott_id === id) v.classList.add("jó");
+                if (választott_id === id) { v.classList.add("jó"); hotList[displayedQuestion].goodAnswers++; }
             } else {
-                if (id === kerdes.correctAnswer) v.classList.add("jó");
+                if (id === kerdes.correctAnswer) { v.classList.add("jó"); hotList[displayedQuestion].goodAnswers = 0; }
                 else if (id === választott_id) v.classList.add("választott");
                 else v.classList.add("rossz");
             }
         });
+        console.log(hotList[displayedQuestion].goodAnswers);
+        if (hotList[displayedQuestion].goodAnswers === 3) {
+            hotList[displayedQuestion].goodAnswers = 0;
+            kérdésBetölt(nextQuestion, displayedQuestion);
+            nextQuestion++;
+        }
+        console.log(hotList[displayedQuestion].goodAnswers);
+
+        localStorage.setItem("hajo_kerdesek", JSON.stringify({
+            hotList: hotList,
+            nextQuestion: nextQuestion
+        }));
         kattinthatoValtas();
     }
 }
